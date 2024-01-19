@@ -5,7 +5,7 @@ function Modal({ children, open }) {
   const dialog = useRef();
 
   useEffect(() => {
-    console.log('dialog', dialog);
+    console.log('MODAL...');
     if (open) {
       dialog.current.showModal();
     } else {
@@ -15,7 +15,7 @@ function Modal({ children, open }) {
 
   return createPortal(
     <dialog className='modal' ref={dialog}>
-      {children}
+      {open ? children : null}
     </dialog>,
     document.getElementById('modal')
   );

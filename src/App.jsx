@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 import Places from './components/Places.jsx';
 import Modal from './components/Modal.jsx';
@@ -7,19 +7,19 @@ import logoImg from './assets/logo.png';
 import { sortPlacesByDistance } from './loc.js';
 import { AVAILABLE_PLACES } from './data.js';
 
+// load the picked places, cara 1
 const storeIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
 const storedPlaces = storeIds.map((id) =>
   AVAILABLE_PLACES.find((place) => place.id === id)
 );
 
 function App() {
-  console.log('APP....');
   const selectedPlace = useRef();
   const [availablePlaces, setAvailablePlaces] = useState([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
 
-  // load the picked places
+  // load the picked places, cara 2
   // useEffect(() => {
   //   const storeIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
   //   const storedPlaces = storeIds.map((id) =>
@@ -66,7 +66,7 @@ function App() {
     }
   }
 
-  function handleRemovePlace() {
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
@@ -77,7 +77,7 @@ function App() {
       'selectedPlaces',
       JSON.stringify(storeIds.filter((id) => id !== selectedPlace.current))
     );
-  }
+  }, []);
 
   return (
     <>
